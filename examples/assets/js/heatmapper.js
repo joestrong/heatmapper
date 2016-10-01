@@ -86,7 +86,9 @@
 
 	  drawClick(click) {
 	    const element = document.querySelector(click.path)
-	    const position = element.getBoundingClientRect()
+	    const bodyRect = document.querySelector('body').getBoundingClientRect()
+	    const rect = element.getBoundingClientRect()
+	    const position = { left: rect.left - bodyRect.left, top: rect.top - bodyRect.top }
 	    const left = position.left + (click.position.x * element.clientWidth)
 	    const top = position.top + (click.position.y * element.clientHeight)
 	    this.drawSpot(left, top)

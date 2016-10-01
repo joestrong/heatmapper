@@ -1,0 +1,23 @@
+{
+  "name": "heatmapper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "build": "npm run build:js && npm run build:demo",
+    "build:js": "webpack src/main.js dist/heatmapper.js",
+    "build:demo": "cp dist/heatmapper.js examples/assets/js/",
+    "watch": "watch 'npm run build' src/",
+    "demo": "ws -d ./examples",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "css-path": "^1.0.3",
+    "local-web-server": "^1.2.6",
+    "watch": "^0.19.2",
+    "webpack": "^1.13.2"
+  }
+}

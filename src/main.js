@@ -11,7 +11,7 @@ class Heatmapper {
 
   bindEvents() {
     document.addEventListener('click', this.placeClick.bind(this))
-    window.addEventListener('resize', this.redrawClicks.bind(this))
+    window.addEventListener('resize', this.onWindowSize.bind(this))
   }
 
   initCanvas() {
@@ -68,6 +68,13 @@ class Heatmapper {
     this.clicks.map((click, index) => {
       this.drawClick(click)
     })
+  }
+
+  onWindowSize(event) {
+    clearTimeout(this.resizeTimeout)
+    this.resizeTimeout = setTimeout(() => {
+      this.redrawClicks();
+    }, 200)
   }
 
   redrawClicks() {

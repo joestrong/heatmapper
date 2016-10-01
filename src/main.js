@@ -12,6 +12,7 @@ class Heatmapper {
 
   bindEvents() {
     document.addEventListener('click', this.placeClick.bind(this))
+    window.addEventListener('resize', this.redrawClicks.bind(this))
   }
 
   placeClick(event) {
@@ -25,10 +26,10 @@ class Heatmapper {
       }
     }
     this.clicks.push(click)
-    this.showClick(click)
+    this.drawClick(click)
   }
 
-  showClick(click) {
+  drawClick(click) {
     const element = document.querySelector(click.path)
     const left = element.offsetLeft + click.position.pixelX
     const top = element.offsetTop + click.position.pixelY
@@ -45,6 +46,21 @@ class Heatmapper {
     spot.style.left = (x - 5) + 'px'
     spot.style.top = (y - 5) + 'px'
     this.canvas.appendChild(spot)
+  }
+
+  clearClicks() {
+    this.canvas.innerHTML = ''
+  }
+
+  drawClicks() {
+    this.clicks.map((click, index) => {
+      this.drawClick(click)
+    })
+  }
+
+  redrawClicks() {
+    this.clearClicks()
+    this.drawClicks()
   }
 }
 

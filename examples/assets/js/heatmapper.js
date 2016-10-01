@@ -59,12 +59,16 @@
 	  }
 
 	  placeClick(event) {
-	    let meta = {
+	    let click = {
 	      path: cssPath(event.target),
-	      x: event.offsetX,
-	      y: event.offsetY
+	      position: {
+	        pixelX: event.offsetX,
+	        pixelY: event.offsetY,
+	        x: Math.round(event.offsetX / event.target.clientWidth * 100, 2),
+	        y: Math.round(event.offsetY / event.target.clientHeight * 100, 2)
+	      }
 	    }
-	    this.clicks.push(meta)
+	    this.clicks.push(click)
 	  }
 	}
 

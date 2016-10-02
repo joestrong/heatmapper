@@ -44,93 +44,115 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict"
-	const cssPath = __webpack_require__(1)
+	"use strict";
 
-	class Heatmapper {
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	  constructor() {
-	    this.clicks = []
-	    this.initCanvas()
-	    this.bindEvents()
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var cssPath = __webpack_require__(1);
+
+	var Heatmapper = function () {
+	  function Heatmapper() {
+	    _classCallCheck(this, Heatmapper);
+
+	    this.clicks = [];
+	    this.initCanvas();
+	    this.bindEvents();
 	  }
 
-	  bindEvents() {
-	    document.addEventListener('click', this.placeClick.bind(this))
-	    window.addEventListener('resize', this.onWindowSize.bind(this))
-	  }
-
-	  initCanvas() {
-	    this.canvas = document.createElement('div')
-	    this.canvas.style.position = 'absolute'
-	    this.canvas.style.top = '0'
-	    this.canvas.style.left = '0'
-	    this.canvas.style.zIndex = '99999'
-	    document.querySelector('body').appendChild(this.canvas)
-	  }
-
-	  placeClick(event) {
-	    event.preventDefault()
-	    const click = {
-	      path: cssPath(event.target),
-	      position: {
-	        pixelX: event.offsetX,
-	        pixelY: event.offsetY,
-	        x: Math.round(event.offsetX / event.target.clientWidth * 100) / 100,
-	        y: Math.round(event.offsetY / event.target.clientHeight * 100) / 100
-	      }
+	  _createClass(Heatmapper, [{
+	    key: 'bindEvents',
+	    value: function bindEvents() {
+	      document.addEventListener('click', this.placeClick.bind(this));
+	      window.addEventListener('resize', this.onWindowSize.bind(this));
 	    }
-	    this.clicks.push(click)
-	    this.drawClick(click)
-	  }
+	  }, {
+	    key: 'initCanvas',
+	    value: function initCanvas() {
+	      this.canvas = document.createElement('div');
+	      this.canvas.style.position = 'absolute';
+	      this.canvas.style.top = '0';
+	      this.canvas.style.left = '0';
+	      this.canvas.style.zIndex = '99999';
+	      document.querySelector('body').appendChild(this.canvas);
+	    }
+	  }, {
+	    key: 'placeClick',
+	    value: function placeClick(event) {
+	      event.preventDefault();
+	      var click = {
+	        path: cssPath(event.target),
+	        position: {
+	          pixelX: event.offsetX,
+	          pixelY: event.offsetY,
+	          x: Math.round(event.offsetX / event.target.clientWidth * 100) / 100,
+	          y: Math.round(event.offsetY / event.target.clientHeight * 100) / 100
+	        }
+	      };
+	      this.clicks.push(click);
+	      this.drawClick(click);
+	    }
+	  }, {
+	    key: 'drawClick',
+	    value: function drawClick(click) {
+	      var element = document.querySelector(click.path);
+	      var bodyRect = document.querySelector('body').getBoundingClientRect();
+	      var rect = element.getBoundingClientRect();
+	      var position = { left: rect.left - bodyRect.left, top: rect.top - bodyRect.top };
+	      var left = position.left + click.position.x * element.clientWidth;
+	      var top = position.top + click.position.y * element.clientHeight;
+	      this.drawSpot(left, top);
+	    }
+	  }, {
+	    key: 'drawSpot',
+	    value: function drawSpot(x, y) {
+	      var spot = document.createElement('div');
+	      spot.style.width = '10px';
+	      spot.style.height = '10px';
+	      spot.style.borderRadius = '50%';
+	      spot.style.backgroundColor = 'black';
+	      spot.style.position = 'absolute';
+	      spot.style.left = x - 5 + 'px';
+	      spot.style.top = y - 5 + 'px';
+	      this.canvas.appendChild(spot);
+	    }
+	  }, {
+	    key: 'clearClicks',
+	    value: function clearClicks() {
+	      this.canvas.innerHTML = '';
+	    }
+	  }, {
+	    key: 'drawClicks',
+	    value: function drawClicks() {
+	      var _this = this;
 
-	  drawClick(click) {
-	    const element = document.querySelector(click.path)
-	    const bodyRect = document.querySelector('body').getBoundingClientRect()
-	    const rect = element.getBoundingClientRect()
-	    const position = { left: rect.left - bodyRect.left, top: rect.top - bodyRect.top }
-	    const left = position.left + (click.position.x * element.clientWidth)
-	    const top = position.top + (click.position.y * element.clientHeight)
-	    this.drawSpot(left, top)
-	  }
+	      this.clicks.map(function (click, index) {
+	        _this.drawClick(click);
+	      });
+	    }
+	  }, {
+	    key: 'onWindowSize',
+	    value: function onWindowSize(event) {
+	      var _this2 = this;
 
-	  drawSpot(x, y) {
-	    const spot = document.createElement('div')
-	    spot.style.width = '10px'
-	    spot.style.height = '10px'
-	    spot.style.borderRadius = '50%'
-	    spot.style.backgroundColor = 'black'
-	    spot.style.position = 'absolute'
-	    spot.style.left = (x - 5) + 'px'
-	    spot.style.top = (y - 5) + 'px'
-	    this.canvas.appendChild(spot)
-	  }
+	      clearTimeout(this.resizeTimeout);
+	      this.resizeTimeout = setTimeout(function () {
+	        _this2.redrawClicks();
+	      }, 200);
+	    }
+	  }, {
+	    key: 'redrawClicks',
+	    value: function redrawClicks() {
+	      this.clearClicks();
+	      this.drawClicks();
+	    }
+	  }]);
 
-	  clearClicks() {
-	    this.canvas.innerHTML = ''
-	  }
+	  return Heatmapper;
+	}();
 
-	  drawClicks() {
-	    this.clicks.map((click, index) => {
-	      this.drawClick(click)
-	    })
-	  }
-
-	  onWindowSize(event) {
-	    clearTimeout(this.resizeTimeout)
-	    this.resizeTimeout = setTimeout(() => {
-	      this.redrawClicks();
-	    }, 200)
-	  }
-
-	  redrawClicks() {
-	    this.clearClicks()
-	    this.drawClicks()
-	  }
-	}
-
-	new Heatmapper()
-
+	new Heatmapper();
 
 /***/ },
 /* 1 */

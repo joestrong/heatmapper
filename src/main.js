@@ -24,13 +24,15 @@ class Heatmapper {
   }
 
   placeClick(event) {
+    const element = event.target
+    const dimensions = element.getBoundingClientRect()
     const click = {
-      path: cssPath(event.target),
+      path: cssPath(element),
       position: {
         pixelX: event.offsetX,
         pixelY: event.offsetY,
-        x: Math.round(event.offsetX / event.target.clientWidth * 100) / 100,
-        y: Math.round(event.offsetY / event.target.clientHeight * 100) / 100
+        x: Math.round(event.offsetX / dimensions.width * 100) / 100,
+        y: Math.round(event.offsetY / dimensions.height * 100) / 100
       }
     }
     this.clicks.push(click)
@@ -42,8 +44,8 @@ class Heatmapper {
     const bodyRect = document.querySelector('body').getBoundingClientRect()
     const rect = element.getBoundingClientRect()
     const position = { left: rect.left - bodyRect.left, top: rect.top - bodyRect.top }
-    const left = position.left + (click.position.x * element.clientWidth)
-    const top = position.top + (click.position.y * element.clientHeight)
+    const left = position.left + (click.position.x * rect.width)
+    const top = position.top + (click.position.y * rect.height)
     this.drawSpot(left, top)
   }
 

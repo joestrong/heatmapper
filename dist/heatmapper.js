@@ -80,13 +80,15 @@
 	  }, {
 	    key: 'placeClick',
 	    value: function placeClick(event) {
+	      var element = event.target;
+	      var dimensions = element.getBoundingClientRect();
 	      var click = {
-	        path: cssPath(event.target),
+	        path: cssPath(element),
 	        position: {
 	          pixelX: event.offsetX,
 	          pixelY: event.offsetY,
-	          x: Math.round(event.offsetX / event.target.clientWidth * 100) / 100,
-	          y: Math.round(event.offsetY / event.target.clientHeight * 100) / 100
+	          x: Math.round(event.offsetX / dimensions.width * 100) / 100,
+	          y: Math.round(event.offsetY / dimensions.height * 100) / 100
 	        }
 	      };
 	      this.clicks.push(click);
@@ -99,8 +101,8 @@
 	      var bodyRect = document.querySelector('body').getBoundingClientRect();
 	      var rect = element.getBoundingClientRect();
 	      var position = { left: rect.left - bodyRect.left, top: rect.top - bodyRect.top };
-	      var left = position.left + click.position.x * element.clientWidth;
-	      var top = position.top + click.position.y * element.clientHeight;
+	      var left = position.left + click.position.x * rect.width;
+	      var top = position.top + click.position.y * rect.height;
 	      this.drawSpot(left, top);
 	    }
 	  }, {

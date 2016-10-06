@@ -80,7 +80,6 @@
 	  }, {
 	    key: 'placeClick',
 	    value: function placeClick(event) {
-	      event.preventDefault();
 	      var click = {
 	        path: cssPath(event.target),
 	        position: {

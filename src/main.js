@@ -24,7 +24,6 @@ class Heatmapper {
   }
 
   placeClick(event) {
-    event.preventDefault()
     const click = {
       path: cssPath(event.target),
       position: {

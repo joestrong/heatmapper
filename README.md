@@ -3,6 +3,8 @@ Responsive Website Heatmaps
 
 Currently a work in progress
 
+![Travis Build - Develop Branch](https://travis-ci.org/joestrong/heatmapper.svg?branch=develop)
+
 # Trying out the demo
 
 1. `git clone https://github.com/joestrong/heatmapper.git`

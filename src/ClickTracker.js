@@ -10,7 +10,7 @@ export default class ClickTracker {
   }
 
   bindEvents() {
-    document.addEventListener('click', this.placeClick.bind(this))
+    document.addEventListener('click', (event) => this.placeClick(event))
   }
 
   placeClick(event) {

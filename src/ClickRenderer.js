@@ -9,7 +9,7 @@ export default class ClickRenderer {
   }
 
   bindEvents() {
-    window.addEventListener('resize', this.onWindowSize.bind(this))
+    window.addEventListener('resize', (event) => this.onWindowSize(event))
   }
 
   initCanvas() {
@@ -18,6 +18,7 @@ export default class ClickRenderer {
     this.canvas.style.top = '0'
     this.canvas.style.left = '0'
     this.canvas.style.zIndex = '99999'
+    this.canvas.classList.add('heatmapper-canvas')
     document.querySelector('body').appendChild(this.canvas)
   }
 

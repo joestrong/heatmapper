@@ -9,8 +9,8 @@
     "build:demo": "cp dist/heatmapper.js examples/assets/js/",
     "watch": "watch 'npm run build' src/",
     "demo": "ws -d ./examples",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "jshint src/"
+    "test": "karma start karma.conf.js --single-run",
+    "lint": "jshint src/ spec/"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +20,12 @@
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.16.0",
     "css-path": "^1.0.3",
+    "jasmine-core": "^2.5.2",
     "jshint": "^2.9.3",
+    "karma": "^1.3.0",
+    "karma-jasmine": "^1.0.2",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-webpack": "^1.8.0",
     "local-web-server": "^1.2.6",
     "watch": "^0.19.2",
     "webpack": "^1.13.2"

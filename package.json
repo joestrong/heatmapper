@@ -10,7 +10,7 @@
     "watch": "watch 'npm run build' src/",
     "demo": "ws -d ./examples",
     "test": "karma start karma.conf.js --single-run",
-    "lint": "jshint src/"
+    "lint": "jshint src/ spec/"
   },
   "keywords": [],
   "author": "",

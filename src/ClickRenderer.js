@@ -13,11 +13,15 @@ export default class ClickRenderer {
   }
 
   initCanvas() {
-    this.canvas = document.createElement('div')
+    const docSize = document.querySelector('html').getBoundingClientRect()
+    this.canvas = document.createElement('canvas')
+    this.canvas.width = Math.round(docSize.width)
+    this.canvas.height = Math.round(docSize.height)
     this.canvas.style.position = 'absolute'
     this.canvas.style.top = '0'
     this.canvas.style.left = '0'
     this.canvas.style.zIndex = '99999'
+    this.canvas.style.pointerEvents = 'none'
     this.canvas.classList.add('heatmapper-canvas')
     document.querySelector('body').appendChild(this.canvas)
   }
@@ -34,19 +38,17 @@ export default class ClickRenderer {
   }
 
   drawSpot(x, y) {
-    const spot = document.createElement('div')
-    spot.style.width = '10px'
-    spot.style.height = '10px'
-    spot.style.borderRadius = '50%'
-    spot.style.backgroundColor = 'black'
-    spot.style.position = 'absolute'
-    spot.style.left = (x - 5) + 'px'
-    spot.style.top = (y - 5) + 'px'
-    this.canvas.appendChild(spot)
+    const context = this.canvas.getContext('2d')
+    const size = 5
+    context.beginPath()
+    context.arc(x, y, size, 0, 2 * Math.PI, false)
+    context.fillStyle = '#000'
+    context.fill()
   }
 
   clearClicks() {
-    this.canvas.innerHTML = ''
+    const context = this.canvas.getContext('2d')
+    context.clearRect(0, 0, this.canvas.width, this.canvas.height)
   }
 
   drawClicks() {
@@ -58,7 +60,12 @@ export default class ClickRenderer {
   onWindowSize(event) {
     clearTimeout(this.resizeTimeout)
     this.resizeTimeout = setTimeout(() => {
-      this.redrawClicks();
+      const docSize = document.querySelector('html').getBoundingClientRect()
+      this.canvas.width = Math.round(docSize.width)
+      this.canvas.height = Math.round(docSize.height)
+      requestAnimationFrame(() => {
+        this.redrawClicks()
+      })
     }, 200)
   }
 

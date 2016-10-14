@@ -100,7 +100,11 @@
 	  _createClass(ClickTracker, [{
 	    key: 'bindEvents',
 	    value: function bindEvents() {
-	      document.addEventListener('click', this.placeClick.bind(this));
+	      var _this = this;
+
+	      document.addEventListener('click', function (event) {
+	        return _this.placeClick(event);
+	      });
 	    }
 	  }, {
 	    key: 'placeClick',
@@ -239,16 +243,25 @@
 	  _createClass(ClickRenderer, [{
 	    key: 'bindEvents',
 	    value: function bindEvents() {
-	      window.addEventListener('resize', this.onWindowSize.bind(this));
+	      var _this = this;
+
+	      window.addEventListener('resize', function (event) {
+	        return _this.onWindowSize(event);
+	      });
 	    }
 	  }, {
 	    key: 'initCanvas',
 	    value: function initCanvas() {
-	      this.canvas = document.createElement('div');
+	      var docSize = document.querySelector('html').getBoundingClientRect();
+	      this.canvas = document.createElement('canvas');
+	      this.canvas.width = Math.round(docSize.width);
+	      this.canvas.height = Math.round(docSize.height);
 	      this.canvas.style.position = 'absolute';
 	      this.canvas.style.top = '0';
 	      this.canvas.style.left = '0';
 	      this.canvas.style.zIndex = '99999';
+	      this.canvas.style.pointerEvents = 'none';
+	      this.canvas.classList.add('heatmapper-canvas');
 	      document.querySelector('body').appendChild(this.canvas);
 	    }
 	  }, {
@@ -266,38 +279,41 @@
 	  }, {
 	    key: 'drawSpot',
 	    value: function drawSpot(x, y) {
-	      var spot = document.createElement('div');
-	      spot.style.width = '10px';
-	      spot.style.height = '10px';
-	      spot.style.borderRadius = '50%';
-	      spot.style.backgroundColor = 'black';
-	      spot.style.position = 'absolute';
-	      spot.style.left = x - 5 + 'px';
-	      spot.style.top = y - 5 + 'px';
-	      this.canvas.appendChild(spot);
+	      var context = this.canvas.getContext('2d');
+	      var size = 5;
+	      context.beginPath();
+	      context.arc(x, y, size, 0, 2 * Math.PI, false);
+	      context.fillStyle = '#000';
+	      context.fill();
 	    }
 	  }, {
 	    key: 'clearClicks',
 	    value: function clearClicks() {
-	      this.canvas.innerHTML = '';
+	      var context = this.canvas.getContext('2d');
+	      context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	    }
 	  }, {
 	    key: 'drawClicks',
 	    value: function drawClicks() {
-	      var _this = this;
+	      var _this2 = this;
 
 	      this.clicks.map(function (click, index) {
-	        _this.drawClick(click);
+	        _this2.drawClick(click);
 	      });
 	    }
 	  }, {
 	    key: 'onWindowSize',
 	    value: function onWindowSize(event) {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      clearTimeout(this.resizeTimeout);
 	      this.resizeTimeout = setTimeout(function () {
-	        _this2.redrawClicks();
+	        var docSize = document.querySelector('html').getBoundingClientRect();
+	        _this3.canvas.width = Math.round(docSize.width);
+	        _this3.canvas.height = Math.round(docSize.height);
+	        requestAnimationFrame(function () {
+	          _this3.redrawClicks();
+	        });
 	      }, 200);
 	    }
 	  }, {

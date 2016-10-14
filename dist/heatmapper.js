@@ -66,6 +66,7 @@
 	  this.clickTracker = new _ClickTracker2.default();
 	  this.clickRenderer = new _ClickRenderer2.default();
 	  this.clickTracker.clickPlaced = function (click) {
+	    _this.clickRenderer.clicks.push(click);
 	    _this.clickRenderer.drawClick(click);
 	  };
 	};
@@ -267,7 +268,7 @@
 	  }, {
 	    key: 'drawClick',
 	    value: function drawClick(click) {
-	      this.clicks.push(click);
+	      //this.clicks.push(click)
 	      var element = document.querySelector(click.path);
 	      var bodyRect = document.querySelector('body').getBoundingClientRect();
 	      var rect = element.getBoundingClientRect();

@@ -82,6 +82,8 @@ describe('ClickRenderer', () => {
     spyOn(fakeContext, 'fill')
     spyOn(fakeContext, 'clearRect')
     clickRenderer.canvas.getContext = () => fakeContext
+    // add the click
+    clickRenderer.clicks.push(click)
     // draw click
     clickRenderer.drawClick(click)
     expect(fakeContext.fill).toHaveBeenCalled()
@@ -97,6 +99,7 @@ describe('ClickRenderer', () => {
     spyOn(fakeContext, 'fill')
     spyOn(fakeContext, 'clearRect')
     clickRenderer.canvas.getContext = () => fakeContext
+    clickRenderer.clicks.push(click)
     clickRenderer.drawClick(click)
     clickRenderer.redrawClicks()
     expect(fakeContext.clearRect).toHaveBeenCalled()

@@ -27,7 +27,7 @@ export default class ClickRenderer {
   }
 
   drawClick(click) {
-    this.clicks.push(click)
+    //this.clicks.push(click)
     const element = document.querySelector(click.path)
     const bodyRect = document.querySelector('body').getBoundingClientRect()
     const rect = element.getBoundingClientRect()

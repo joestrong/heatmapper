@@ -8,6 +8,7 @@ class Heatmapper {
     this.clickTracker = new ClickTracker()
     this.clickRenderer = new ClickRenderer()
     this.clickTracker.clickPlaced = click => {
+      this.clickRenderer.clicks.push(click)
       this.clickRenderer.drawClick(click)
     }
   }

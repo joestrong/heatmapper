@@ -105,6 +105,13 @@
 	      document.addEventListener('click', function (event) {
 	        return _this.placeClick(event);
 	      });
+	      // Override stopPropagation
+	      var oldStopPropagation = Event.prototype.stopPropagation;
+	      var clickTracker = this;
+	      Event.prototype.stopPropagation = function () {
+	        clickTracker.placeClick(this);
+	        oldStopPropagation.call(this);
+	      };
 	    }
 	  }, {
 	    key: 'placeClick',

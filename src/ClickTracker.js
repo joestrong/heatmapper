@@ -11,6 +11,13 @@ export default class ClickTracker {
 
   bindEvents() {
     document.addEventListener('click', (event) => this.placeClick(event))
+    // Override stopPropagation
+    const oldStopPropagation = Event.prototype.stopPropagation
+    const clickTracker = this
+    Event.prototype.stopPropagation = function() {
+      clickTracker.placeClick(this)
+      oldStopPropagation.call(this)
+    }
   }
 
   placeClick(event) {
